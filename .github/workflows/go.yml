@@ -1,29 +1,28 @@
-name: Build Go Executable
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
+
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: "1.22.5"
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.22.5'
 
-      - name: Build executable
-        run: |
-          go build -o todo.exe ./
+    - name: Build
+      run: go build -v ./...
 
-      - name: Upload Executable
-        uses: actions/upload-artifact@v4
-        with:
-          name: todo-exe
-          path: todo.exe
+    - name: Test
+      run: go test -v ./...
